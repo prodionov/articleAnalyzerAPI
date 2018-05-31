@@ -1,6 +1,8 @@
 from flask import Flask, jsonify, request
+from flask_restful import Resource, Api
 
 app = Flask(__name__)
+api = Api(app)
 
 negative_dict = [
     "abnormal",
@@ -18,9 +20,22 @@ positive_dict = [
 def home():
     return jsonify({"greeting":"hello world"})
 
-@app.route("/dictionaries")
-def get_dictionaries():
-    return jsonify({"positive" : positive_dict, "negative": negative_dict})
+class Dictionaries(Resource):
+    def get(self):
+        return {"positive" : positive_dict, "negative": negative_dict}
+
+
+class Dictionary(Resource):
+    def get(self, word):
+        if word in positive_dict:
+            return {"sentiment": "positive"}
+        if word in negative_dict:
+            return {"sentiment" : "negative"}
+        return {"sentiment" : "neutral"}
+
+api.add_resource(Dictionaries, '/dictionaries')
+api.add_resource(Dictionary, '/dictionary/<string:word>')
+
 
 @app.route("/dictionary/positive/<string:word>")
 def add_positive_word(word):
