@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_restful import Resource, Api, reqparse
+from processing.influence_score import textProcessing
 
 app = Flask(__name__)
 #app.config.from_object('config.BaseConfig')
@@ -41,10 +42,10 @@ api.add_resource(Dictionary, '/dictionary/<string:word>')
 
 @app.route("/influence", methods=['POST'])
 def process_data():
-    print('request', request)
     request_data = request.get_json()
-    print('request_data what', request_data)
-    return jsonify({"text" : "love"})
+    result = textProcessing(request_data)
+    print('result', result)
+    return jsonify(result)
 
 
 @app.route("/dictionary/positive/<string:word>")
