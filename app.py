@@ -1,7 +1,9 @@
 from flask import Flask, jsonify, request
-from flask_restful import Resource, Api
+from flask_restful import Resource, Api, reqparse
 
 app = Flask(__name__)
+#app.config.from_object('config.BaseConfig')
+app.config['SERVER_NAME'] = "localhost:5555"
 api = Api(app)
 
 negative_dict = [
@@ -33,8 +35,16 @@ class Dictionary(Resource):
             return {"sentiment" : "negative"}
         return {"sentiment" : "neutral"}
 
+
 api.add_resource(Dictionaries, '/dictionaries')
 api.add_resource(Dictionary, '/dictionary/<string:word>')
+
+@app.route("/influence", methods=['POST'])
+def process_data():
+    print('request', request)
+    request_data = request.get_json()
+    print('request_data what', request_data)
+    return jsonify({"text" : "love"})
 
 
 @app.route("/dictionary/positive/<string:word>")
@@ -57,8 +67,10 @@ def add_negative_word(word):
     negative_dict.sort()
     return jsonify(positive_dict=positive_dict)
 
-@app.route("/influence", methods=["POST"])
-def calculate_influence():
-    request_data = request.get_json()
-    print('request_data', request_data)
-    return jsonify(length=len(request_data["text"]))
+
+
+# @app.route("/influence", methods=["POST"])
+# def calculate_influence():
+#     request_data = request.get_json()
+#     print('request_data', request_data)
+#     return jsonify(length=len(request_data["text"]))
