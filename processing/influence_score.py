@@ -5,6 +5,7 @@ from nltk.tokenize import RegexpTokenizer
 from nltk.tokenize import sent_tokenize
 
 def sigmoid(max):
+    #sigmoid that calculates the influnce score
     c=1
     def calc(x):
         return((max/(1+math.exp(-x*c))-max/2)*2)
