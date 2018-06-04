@@ -1,26 +1,11 @@
+from restAPI import app, api
 from flask import Flask, jsonify, request
 from flask_restful import Resource, Api, reqparse
-from processing.influence_score import textProcessing
-
-app = Flask(__name__)
-#app.config.from_object('config.BaseConfig')
-app.config['SERVER_NAME'] = "localhost:5555"
-api = Api(app)
-
-negative_dict = [
-    "abnormal",
-    "abolish",
-    "abort"
-]
-
-positive_dict = [
-    "acclaim",
-    "accolade",
-    "accurate"
-]
+from restAPI.processing.influence_score import textProcessing
 
 @app.route("/")
 def home():
+    print('init py is running')
     return jsonify({"greeting":"hello world"})
 
 class Dictionaries(Resource):
@@ -44,8 +29,7 @@ api.add_resource(Dictionary, '/dictionary/<string:word>')
 def process_data():
     request_data = request.get_json()
     result = textProcessing(request_data)
-    print('result', result)
-    return jsonify(result)
+    return jsonify(request_data)
 
 
 @app.route("/dictionary/positive/<string:word>")
@@ -67,11 +51,3 @@ def add_negative_word(word):
     negative_dict.append(word)
     negative_dict.sort()
     return jsonify(positive_dict=positive_dict)
-
-
-
-# @app.route("/influence", methods=["POST"])
-# def calculate_influence():
-#     request_data = request.get_json()
-#     print('request_data', request_data)
-#     return jsonify(length=len(request_data["text"]))
