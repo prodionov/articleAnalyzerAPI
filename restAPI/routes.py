@@ -29,7 +29,7 @@ api.add_resource(Dictionary, '/dictionary/<string:word>')
 def process_data():
     request_data = request.get_json()
     result = textProcessing(request_data)
-    return jsonify(request_data)
+    return jsonify(result)
 
 
 @app.route("/dictionary/positive/<string:word>")
