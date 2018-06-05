@@ -12,7 +12,6 @@ def sigmoid(max):
     return calc
 
 def textProcessing(text):
-    print('this function was called')
     working_copy = copy.copy(text)
     token_sentence = sent_tokenize(working_copy)
     words_sentences_pairs = {}
