@@ -28,7 +28,7 @@ api.add_resource(Dictionary, '/dictionary/<string:word>')
 @app.route("/influence", methods=['POST'])
 def process_data():
     request_data = request.get_json()
-    result = textProcessing(request_data)
+    result = textProcessing(request_data["payload"])
     return jsonify(result)
 
 
