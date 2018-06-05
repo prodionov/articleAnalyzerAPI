@@ -5,8 +5,8 @@ from restAPI.processing.influence_score import textProcessing
 
 @app.route("/")
 def home():
-    print('init py is running')
     return jsonify({"greeting":"hello world"})
+
 
 class Dictionaries(Resource):
     def get(self):
